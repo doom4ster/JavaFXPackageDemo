@@ -30,12 +30,12 @@ contribution to the documentation!)_
 ## macOS
 The first requirement for packaging on macOS is... don't... use a real PC...
 
-Jokes aside, in the 31 years I have been alive on this planet, I have never once touched a computer that is running macOS.
+Jokes aside, in the 31 years I have been alive on this planet, I have never once touched a computer that was running macOS.
 As such, I have genuinely no idea what walled-garden level headaches are awaiting any poor soul trying to package apps on
 that OS. 
 
 _(WIP: This one would require a much more in-depth contribution from someone, as not only would I need someone to write
-the guidence, but then I would have to go away and test if it is actually correct, which would mean having to use macOS 
+the guidance, but then I would have to go away and test if it is actually correct, which would mean having to use macOS 
 for the first time in my life. So, if anyone has the patience to help me with this one, please first create an issue so 
 we can discuss how we can approach this guidance in an effective manner)_
 
