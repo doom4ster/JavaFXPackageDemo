@@ -52,14 +52,13 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
+
         <javafx.version>21.0.6</javafx.version>
         <junit.version>5.12.1</junit.version>
-
 
         <app.name>JavaFXPackageDemo</app.name>
         <app.version>1.0.0</app.version>
         <app.mainClass>io.senftresearch.javafxpackagedemo/io.senftresearch.javafxpackagedemo.HelloApplication</app.mainClass>
-
     </properties>
 
     <dependencies>
