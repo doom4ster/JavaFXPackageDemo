@@ -32,6 +32,8 @@ not need changing in several places, as there is a single source of truth.
 3. Due to the OS profiles, a developer can package the JavaFX application utilising the same `pom.xml`, regardless of
 the Operating System the application is being packaged on.
 
+For a more detailed explanation, see [The Maven pom.xml Properties](03-pom-xml-properties.md).
+
 ### The JavaFX Maven Plugin
 The JavaFX Maven Plugin has a relatively simple purpose: creating a runtime image of the JavaFX application. In this context,
 the runtime image is a self-contained package that contains the Java runtime and all the modules required to run the 
@@ -46,7 +48,10 @@ JavaFX maven plugin, options for utilising jlink.
 Jlink is a tool that allows the generation of a Java runtime image containing only the modules required for the 
 JavaFX application to run. This results in a significantly smaller Java runtime that is tailored to the requirements of
 the application. 
-### The JPackage Maven Plugin
+
+For a more detailed explanation, see [TheJavaFX Maven Plugin](04-javafx-maven-plugin.md).
+
+### The jpackage Maven Plugin
 Whilst you now have a custom Java runtime image, distributing your JavaFX application in this form will not lead to a
 very convenient experience for end-users attempting to use your application. Depending on the operating system, the 
 end-user would have to download and extract the zipped runtime image themselves, locate the executable within the extracted
@@ -54,3 +59,5 @@ directory, and create their own QoL features, such as desktop shortcuts.
 
 This is where jpackage (utilised via the jpackage Maven Plugin) comes in. The plugin allows for the JavaFX application, 
 along with its custom runtime image, to be packaged into a platform-specific distributable, tailored to the targeted OS.
+
+For a more detailed explanation, see [The jpackage Maven Plugin](05-jpackage-maven-plugin.md).

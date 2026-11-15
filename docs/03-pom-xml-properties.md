@@ -1,0 +1,1 @@
+# The Maven pom.xml Properties
