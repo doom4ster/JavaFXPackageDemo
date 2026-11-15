@@ -14,7 +14,7 @@ The workflow of the packaging process is actually quite simple. The workflow is 
 - How to package the built JavaFX application as a standalone application? 
 
 These 3 problems are solved by the pom.xml properties, javafx-maven-plugin, and jpackage-maven-plugin respectfully.
-![img.png](images/package-workflow-diagram.png)![workflow.png](images/package-workflow-diagram.png)
+![workflow.png](images/package-workflow-diagram.png)
 
 
 ### The Maven pom.xml Properties
