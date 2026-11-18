@@ -1,0 +1,9 @@
+[[configurations]]
+id = "user:9551de611"
+name = "javafx run"
+kind = "maven"
+command = "./mvnw"
+args = ["javafx:run"]
+is-test = true
+params = { arguments = "", executable = "./mvnw", projectDir = "", tasks = "javafx:run", wrapper = "true" }
+target = ""
