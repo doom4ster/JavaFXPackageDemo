@@ -9,9 +9,15 @@ target/
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/libraries/
+.idea/workspace.xml
+out/
 *.iws
 *.iml
 *.ipr
+
+### OpenIDEA ###
+.openidea/shelf/
+.openidea/changelists.json
 
 ### Eclipse ###
 .apt_generated
