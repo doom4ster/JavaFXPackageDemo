@@ -1,63 +1,53 @@
-# Packaging Architecture
-My personal gripe with a lot of the "guidance" about JavaFX packaging out there is, frankly, they fail to give a
-general overview of how the packaging actually works. As useful as a complete pom.xml file is, I find it is quite a 
-frustrating exercise to have to figure out what such "complete" solutions are actually doing to achieve the end-result.
+# 打包架構
+我個人對網路上許多 JavaFX 打包「教學」的不滿是，坦白說，它們沒有提供打包實際運作方式的整體概覽。
+完整的 pom.xml 雖然很有用，但要自己去弄懂這些「完整」方案到底做了什麼才達到最終結果，是件很令人沮喪的事。
 
-As such, the following will be a top-level-view of how the packaging of a JavaFX app works, and what each individual part 
-of the packaging process is responsible for. 
+因此，以下將從最上層的角度說明 JavaFX 應用程式的打包如何運作，以及打包流程中每個部分各自負責什麼。
 
-## Workflow Overview
-The workflow of the packaging process is actually quite simple. The workflow is designed to solve 3 separate problems:
+## 流程概覽
+打包流程其實相當簡單，目的是解決 3 個不同的問題：
 
-- How do you specify which Operating System you wish to package a JavaFX application for?
-- How do you build a JavaFX application that only has what I need in it?
-- How to package the built JavaFX application as a standalone application? 
+- 如何指定要為哪個作業系統打包 JavaFX 應用程式？
+- 如何建置一個只包含必要內容的 JavaFX 應用程式？
+- 如何把建置好的 JavaFX 應用程式打包成獨立的應用程式？
 
-These 3 problems are solved by the pom.xml properties, javafx-maven-plugin, and jpackage-maven-plugin respectfully.
+這 3 個問題分別由 pom.xml 屬性、javafx-maven-plugin 和 jpackage-maven-plugin 解決。
 ![workflow.png](images/package-workflow-diagram.png)
 
 
-### The Maven pom.xml Properties
-The `pom.xml` file will utilise properties heavily, for the sake of simplifying the build process. Specific to JavaFX,
-the main class path, application name and version, along with that package type, as determined by the various OS
-profiles. The appropriate profile will be used, based on the Operating System the package is being built from.
+### Maven pom.xml 屬性
+為了簡化建置流程，`pom.xml` 大量使用屬性。與 JavaFX 相關的有主類別路徑、應用程式名稱與版本，
+以及由各作業系統 profile 決定的打包類型。建置時會依據所在的作業系統套用對應的 profile。
 
-This is better than hard coding the various information throughout the `pom.xml` for three reasons:
+這比把各種資訊寫死在 `pom.xml` 各處要好，原因有三：
 
-1. Having all the variable properties in one location, near the top of the pom.xml, makes it easier to both find and
-edit them. When key information is scattered throughout the `pom.xml`, it is not uncommon for one of the properties to
-be missed when doing updates.
-2. Properties that are in several of the plugins utilised (such as the main class path for the JavaFX application) do
-not need changing in several places, as there is a single source of truth. 
-3. Due to the OS profiles, a developer can package the JavaFX application utilising the same `pom.xml`, regardless of
-the Operating System the application is being packaged on.
+1. 把所有可變的屬性集中在一處（pom.xml 的開頭附近），更容易找到也更容易修改。
+當關鍵資訊散落在 `pom.xml` 各處時，更新時漏掉其中一個屬性是很常見的事。
+2. 多個外掛都會用到的屬性（例如 JavaFX 應用程式的主類別路徑）只有單一來源，不需要在好幾個地方修改。
+3. 有了作業系統 profile，不論在哪個作業系統上打包，開發者都能使用同一份 `pom.xml` 打包 JavaFX 應用程式。
 
-For a more detailed explanation, see [The Maven pom.xml Properties](03-pom-xml-properties.md).
+更詳細的說明請參考 [Maven pom.xml 屬性](03-pom-xml-properties.md)。
 
-### The JavaFX Maven Plugin
-The JavaFX Maven Plugin has a relatively simple purpose: creating a runtime image of the JavaFX application. In this context,
-the runtime image is a self-contained package that contains the Java runtime and all the modules required to run the 
-JavaFX application. This runtime image is typically set up with only the components required by the JavaFX application. 
-This makes it possible to package the JavaFX application with its own, custom runtime. This allows the application to
-run without the end-user having to install Java separately. 
+### JavaFX Maven 外掛
+JavaFX Maven 外掛的用途相對單純：建立 JavaFX 應用程式的執行環境映像檔（runtime image）。
+在這裡，執行環境映像檔指的是一個獨立的套件，裡面包含 Java 執行環境以及執行 JavaFX 應用程式所需的所有模組。
+這個映像檔通常只會包含 JavaFX 應用程式需要的元件。這讓 JavaFX 應用程式可以連同自己專屬的自訂執行環境一起打包，
+使用者不必另外安裝 Java 就能執行。
 
-On the surface, this seems to be a problem, as packaging the entirety of the Java runtime for the sake of a singular 
-application would result in an unnecessarily large distribution. The solution is to utilise an in-built feature of the 
-JavaFX maven plugin, options for utilising jlink.  
+表面上這似乎是個問題：只為了一個應用程式就打包整個 Java 執行環境，會讓發佈檔大得沒有必要。
+解決方法是使用 JavaFX Maven 外掛內建的功能：使用 jlink 的相關選項。
 
-Jlink is a tool that allows the generation of a Java runtime image containing only the modules required for the 
-JavaFX application to run. This results in a significantly smaller Java runtime that is tailored to the requirements of
-the application. 
+jlink 是一個工具，可以產生只包含 JavaFX 應用程式執行所需模組的 Java 執行環境映像檔。
+這樣得到的 Java 執行環境會小得多，而且是針對應用程式的需求量身打造的。
 
-For a more detailed explanation, see [TheJavaFX Maven Plugin](04-javafx-maven-plugin.md).
+更詳細的說明請參考 [JavaFX Maven 外掛](04-javafx-maven-plugin.md)。
 
-### The jpackage Maven Plugin
-Whilst you now have a custom Java runtime image, distributing your JavaFX application in this form will not lead to a
-very convenient experience for end-users attempting to use your application. Depending on the operating system, the 
-end-user would have to download and extract the zipped runtime image themselves, locate the executable within the extracted
-directory, and create their own QoL features, such as desktop shortcuts.
+### jpackage Maven 外掛
+雖然你現在有了自訂的 Java 執行環境映像檔，但用這種形式發佈 JavaFX 應用程式，對使用者來說並不方便。
+視作業系統而定，使用者得自己下載並解壓縮執行環境映像檔的壓縮檔，在解壓後的資料夾中找到執行檔，
+還要自己建立桌面捷徑之類的便利功能。
 
-This is where jpackage (utilised via the jpackage Maven Plugin) comes in. The plugin allows for the JavaFX application, 
-along with its custom runtime image, to be packaged into a platform-specific distributable, tailored to the targeted OS.
+這時就輪到 jpackage（透過 jpackage Maven 外掛使用）上場了。這個外掛可以把 JavaFX 應用程式連同其自訂執行環境映像檔，
+打包成針對目標作業系統的平台專用安裝檔。
 
-For a more detailed explanation, see [The jpackage Maven Plugin](05-jpackage-maven-plugin.md).
+更詳細的說明請參考 [jpackage Maven 外掛](05-jpackage-maven-plugin.md)。

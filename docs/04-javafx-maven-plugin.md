@@ -1,47 +1,32 @@
-# The JavaFX Maven Plugin
-When running a JavaFX application, it would typically be required for the end user to have a JDK/JRE distribution that 
-includes JavaFX. This is a problem for several reasons, but first and foremost is that JavaFX is no longer packaged 
-within typical JDKs. The JavaFX Maven Plugin provides a solution to this problem. The plugin creates a custom Java 
-runtime image of the application. This allows the JavaFX application to run independently of the end-user's local JDK/JRE
-setup.
+# JavaFX Maven 外掛
+執行 JavaFX 應用程式時，通常需要使用者擁有包含 JavaFX 的 JDK/JRE。這會造成好幾個問題，
+其中最主要的是，一般的 JDK 已經不再內附 JavaFX。JavaFX Maven 外掛解決了這個問題：
+它會為應用程式建立自訂的 Java 執行環境映像檔，讓 JavaFX 應用程式不依賴使用者電腦上的 JDK/JRE 設定也能執行。
 
-Whilst the documentation for the plugin can be found [here](https://github.com/openjfx/javafx-maven-plugin), the following
-section will go into details of the main aspects of the plugin, and how it works, as the documentation for the plugin
-assumes a base knowledge of concepts such as jlink. This Plugin executes the build during the "package" phase. This is to 
-ensure the Java runtime image is completed before [jpackage maven plugin](05-jpackage-maven-plugin.md) is called to package
-it.
+這個外掛的官方文件在[這裡](https://github.com/openjfx/javafx-maven-plugin)，不過官方文件預設讀者已經具備 jlink 等概念的基礎知識，
+所以以下會詳細說明外掛的主要部分及其運作方式。這個外掛會在「package」階段執行建置，
+確保在呼叫 [jpackage Maven 外掛](05-jpackage-maven-plugin.md) 打包之前，Java 執行環境映像檔已經建立完成。
 
-## JavaFX Run Options
-The plugin defines various run options within the `pom.xml`. In this setup, only one of them is a non-jlink related option.
+## JavaFX 執行選項
+這個外掛在 `pom.xml` 中定義了多個執行選項。在本專案的設定中，只有一個選項與 jlink 無關。
 
-The `mainClass`is the path of the main class of the application. To clarify this is the class that acts as the entry point 
-of the application. So, for this project, it is the `HelloApplication.java` class, not the `Launcher.class`.
+`mainClass` 是應用程式主類別的路徑。說得更明確一點，這是作為應用程式進入點的類別。
+所以在本專案中，它是 `HelloApplication.java` 類別，而不是 `Launcher.class`。
 
-## The jlink Tool & Options
-The majority of the options found within the JavaFX Maven Plugin configuration are related to jlink. The jlink tool is what
-specifically allows the plugin to create a custom Java runtime image. This image will only contain the dependencies required
-to run the application, allowing it to be a much smaller size. The issue I personally have found with jlink is, with the 
-greatest of respect to Oracle, their [official documentation for jlink](https://docs.oracle.com/en/java/javase/21/docs/specs/man/jlink.html)
-is not exactly clear and concise. As such, this guide will focus on the ability to utilise jlink via the JavaFX Maven Plugin.
+## jlink 工具與選項
+JavaFX Maven 外掛設定中的大部分選項都與 jlink 有關。jlink 工具正是讓外掛能建立自訂 Java 執行環境映像檔的關鍵。
+這個映像檔只會包含執行應用程式所需的相依套件，因此體積可以小很多。我個人覺得 jlink 的問題在於，
+恕我直言，Oracle 的 [jlink 官方文件](https://docs.oracle.com/en/java/javase/21/docs/specs/man/jlink.html)並不怎麼清楚簡潔。
+因此，本文會著重在如何透過 JavaFX Maven 外掛使用 jlink。
 
-The following JavaFX Maven Plugin options are related to jlink directly: 
-- `launcher`: This will define a script that launches the application, directing to the custom Java Runtime and the 
-main class of the application (i.e. `HelloApplication.java` in this case).
-- `jlinkImageName`: Sets the name of the directory of the image, which will be useful as it will be called directly by
-the [jpackage maven plugin](05-jpackage-maven-plugin.md) later.
-- `jlinkZipName`: Sets the name of the zipped directory version of the image. _(Note, at the moment the name of the zip
-and image names are hardcoded. Have debated if it would be better as a general pom.xml property, but ultimately refrained
-, as I am not sure if there could be use cases where you want different names for the zip and image.)_
-- `noManPages`: Simply removes the directory from the Java runtime image that contain the documentation about command-line
-tools for the image. As this image will eventually package up into a standalone app, there is no need for this documentation
-to be present, hence they are removed to reduce image size.
-- `stripDebug`: This strips the debug information (such as metadata like source file info, line number tables etc.) from
-the image. This reduces the image size, but means it is more difficult to directly debug on the image directly (as opposed
-to say a developer build).
-- `noHeaderFiles`: Removes the native header files from the Image. Any JavaFX application that is not intending to use native
-functionality (via something such as Java Native Interface) these header files are not typically needed, hence can be removed
-to reduce image size. 
-
-
-
-
+以下是與 jlink 直接相關的 JavaFX Maven 外掛選項：
+- `launcher`：定義一個啟動應用程式的腳本，指向自訂的 Java 執行環境以及應用程式的主類別（在本專案中即 `HelloApplication.java`）。
+- `jlinkImageName`：設定映像檔資料夾的名稱。這個名稱很重要，因為之後 [jpackage Maven 外掛](05-jpackage-maven-plugin.md) 會直接使用它。
+- `jlinkZipName`：設定映像檔壓縮版本的名稱。_（注意：目前壓縮檔和映像檔的名稱都是寫死的。我考慮過是否改成一般的 pom.xml 屬性會比較好，
+但最後沒有這麼做，因為我不確定是否會有需要讓壓縮檔和映像檔使用不同名稱的情況。）_
+- `noManPages`：從 Java 執行環境映像檔中移除命令列工具說明文件（man pages）的資料夾。由於這個映像檔最終會被打包成獨立的應用程式，
+不需要這些文件，因此移除它們以縮小映像檔。
+- `stripDebug`：移除映像檔中的除錯資訊（例如原始檔資訊、行號表等中繼資料）。這可以縮小映像檔，
+但相較於開發用的建置版本，直接在這個映像檔上除錯會比較困難。
+- `noHeaderFiles`：從映像檔中移除原生標頭檔（header files）。如果 JavaFX 應用程式不打算使用原生功能（例如透過 Java Native Interface），
+通常不需要這些標頭檔，因此可以移除以縮小映像檔。

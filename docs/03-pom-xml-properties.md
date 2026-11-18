@@ -1,15 +1,13 @@
-# The Maven pom.xml Properties
-Within the `pom.xml`, a number of properties have been set up to make the setup / maintaining of the application / its
-packaging easier long term. This includes both general application properties, along with Operating System specific
-profiles. This ensures that there is a single source of truth for all the critical properties of the application, 
-reducing the chance of properties being forgotten about / missed when updating the application. 
+# Maven pom.xml 屬性
+`pom.xml` 中設定了一些屬性，讓應用程式及其打包的設定與長期維護更容易。這包括一般的應用程式屬性，
+以及各作業系統專用的 profile。這樣可以確保應用程式所有關鍵屬性都只有單一來源，
+降低更新應用程式時忘記或漏改屬性的機會。
 
-## Operating System Profiles
-As the type of packaged distributable is Operating-System dependant, this needs to be specified within the packaging 
-workflow. This poses a problem, as this would require 3 separate `pom.xml` instances (one for each Operating System). 
-Luckily, in maven, conditional profiles can be set up to make this easier. 
+## 作業系統 Profile
+由於打包出來的安裝檔類型取決於作業系統，這必須在打包流程中指定。這會造成一個問題：
+這樣就需要 3 份不同的 `pom.xml`（每個作業系統一份）。幸好 Maven 可以設定條件式 profile，讓這件事變簡單。
 
-In this case: 
+在本專案中：
 
 ```xml
 <profiles>
@@ -53,28 +51,23 @@ In this case:
     </profiles>
 ```
 
-Each profile is provided with an appropriate id (technically, the id for these profiles can be anything you want, but it
-makes sense to name after their respective OS). To ensure the correct profile is used on the correct OS, the `<activation>`
-element is utilised. This is conditional logic that determines if the profile will be utilised during the build. In this
-case, the type of operating system is utilised. _(Note: The Linux profile uses `name` rather than `family` as, counter 
-intuitively, whilst macOS has its own dedicated `mac` family, it also falls under the `unix` family (which is also utilised
-for Linux, as it does not have its own dedicated family)_.
+每個 profile 都有一個適當的 id（技術上這些 profile 的 id 可以隨便取，但以對應的作業系統命名比較合理）。
+為了確保在正確的作業系統上使用正確的 profile，這裡使用了 `<activation>` 元素。
+這是一段條件邏輯，決定建置時是否套用該 profile。在這裡，判斷依據是作業系統的類型。
+_（注意：Linux profile 使用 `name` 而不是 `family`，因為與直覺相反，macOS 雖然有自己專屬的 `mac` family，
+但它同時也屬於 `unix` family（Linux 也使用這個 family，因為 Linux 沒有自己專屬的 family））_。
 
-Once a profile has been determined, the build will use that profile's version of `app.package.type` for any configuration
-of the build that requires it. 
+確定使用哪個 profile 之後，建置過程中任何需要 `app.package.type` 的設定，都會使用該 profile 中的值。
 
-## Application Properties:
-Below are explanations for where each of the properties are utilised within the packaging workflow:
+## 應用程式屬性：
+以下說明各個屬性在打包流程中用在哪裡：
 
-- `project.build.sourceEncoding`: This is a standard property that informs Maven to utilise UTF-8 character encoding 
-when reading / compiling the project's files. 
-- `maven.compiler.release`: Utilised to set the version of Java to utilise when compiling. Technically, this is only used
-in one place, but is set as a property so there is a single source of truth for the key properties.
-- `javafx.version`: The version of JavaFX to use for both the `javafx-controls` and `javafx-fxml` dependencies.
-- `junit.version` : The version of JUnit to utilise during the build. Like the `maven.compiler.release`, it is only a 
-property to ensure a single source of truth for key properties. 
-- `app.name` : The name of the final packaged application.
-- `app.version` : The version number of the packaged application.
-- `app.mainClass` : The path to the main class of the application. This is handy as both the [JavaFX Maven Plugin](04-javafx-maven-plugin.md) and 
-[jpackage Maven Plugin](05-jpackage-maven-plugin.md) utilise the class path, ensuring that any updates to that path are
-captured by both plugins via a single change. 
+- `project.build.sourceEncoding`：標準屬性，告訴 Maven 在讀取和編譯專案檔案時使用 UTF-8 字元編碼。
+- `maven.compiler.release`：設定編譯時使用的 Java 版本。技術上它只在一個地方被使用，
+但設成屬性是為了讓關鍵屬性只有單一來源。
+- `javafx.version`：`javafx-controls` 和 `javafx-fxml` 兩個相依套件使用的 JavaFX 版本。
+- `junit.version`：建置時使用的 JUnit 版本。和 `maven.compiler.release` 一樣，設成屬性只是為了讓關鍵屬性只有單一來源。
+- `app.name`：最終打包出的應用程式名稱。
+- `app.version`：打包出的應用程式版本號。
+- `app.mainClass`：應用程式主類別的路徑。這很方便，因為 [JavaFX Maven 外掛](04-javafx-maven-plugin.md) 和
+[jpackage Maven 外掛](05-jpackage-maven-plugin.md) 都會用到這個類別路徑，只要改一處，兩個外掛都會套用更新。

@@ -1,41 +1,31 @@
-# Prerequisites for Packaging JavaFX Apps
-So, whilst the in-built JavaFX Plugin for InteliJ is a great starting point,
-it undoubtably has flaws. This is due to a combination unconsidered edge-cases the plugin
-developers and the fact JavaFX support is generally not a high priority.
+# 打包 JavaFX 應用程式的事前準備
+IntelliJ 內建的 JavaFX 外掛雖然是很好的起點，但它無疑有缺陷。原因一方面是外掛開發者沒有考慮到某些邊界情況，
+另一方面則是 JavaFX 的支援通常不是優先事項。
 
-One of the things not considered is warning / information on OS-specific prerequisites for 
-packaging your application. 
+其中一個沒被考慮到的地方，就是針對打包應用程式時各作業系統的事前需求，缺乏警告或說明。
 
 ## Linux
-Linux is probably both the most "straight forward" and "temperamental" of the operating systems to
-package on. _(Is anyone actually surprised by this?)_
+Linux 大概是所有作業系統中，打包起來既「最直接」又「最難捉摸」的一個。_（有人會對此感到意外嗎？）_
 
-It is straight forward as, other than the specific JDK you wish to use, the packaging itself is pretty
-much plug and play. However, I give no guarantees on individual distros and desktop environments. I have 
-only built on CachyOS (Arch-Based) so far. Hence, for distros may have various quirks such as different default
-native libraries, issues that are dependent on desktop environment, and other such headaches. 
+說它直接，是因為除了選定要使用的 JDK 之外，打包本身幾乎是隨插即用。不過，我無法對個別發行版和桌面環境做任何保證。
+目前我只在 CachyOS（基於 Arch）上建置過。因此，各發行版可能會有各種怪癖，例如預設的原生函式庫不同、
+問題取決於桌面環境，以及其他種種令人頭痛的狀況。
 
-_(WIP: In the future, it would be the intention for potential contributors to populate this section with information regarding
-specific, per-distro, requirements)_ 
+_（撰寫中：未來希望有貢獻者能在此補充各發行版的特定需求資訊）_
 
 ## Windows
-Windows requires several things to be considered but, I must confess, I do not have the experience myself to give details.
-I am aware, in passing, that something known as the WiX Toolset is required to create `.exe` files. Furthermore, I have 
-vague memories of, when doing literally anything on Windows to do with development, having to configure the PATH to 
-actually get the PC to recognise where all the dependencies are. 
+在 Windows 上需要考慮好幾件事，但我必須坦承，我自己沒有足夠的經驗來說明細節。
+我只是略有耳聞，要產生 `.exe` 檔需要一個叫 WiX Toolset 的工具。此外，我隱約記得在 Windows 上做任何跟開發有關的事情時，
+都得設定 PATH，電腦才找得到所有相依套件的位置。
 
-_(WIP: If anyone is more versed in the details / headaches of building on Windows, I would be very much grateful for your
-contribution to the documentation!)_
+_（撰寫中：如果有人更熟悉在 Windows 上建置的細節與麻煩之處，非常感謝你為這份文件做出貢獻！）_
 
 ## macOS
-The first requirement for packaging on macOS is... don't... use a real PC...
+在 macOS 上打包的第一個要求是……別……用台真正的電腦……
 
-Jokes aside, in the 31 years I have been alive on this planet, I have never once touched a computer that was running macOS.
-As such, I have genuinely no idea what walled-garden level headaches are awaiting any poor soul trying to package apps on
-that OS. 
+玩笑歸玩笑，我在這個星球上活了 31 年，從來沒碰過任何一台執行 macOS 的電腦。
+所以，對於那些試圖在這個作業系統上打包應用程式的可憐人，會遇到什麼「圍牆花園」等級的麻煩，我真的一無所知。
 
-_(WIP: This one would require a much more in-depth contribution from someone, as not only would I need someone to write
-the guidance, but then I would have to go away and test if it is actually correct, which would mean having to use macOS 
-for the first time in my life. So, if anyone has the patience to help me with this one, please first create an issue so 
-we can discuss how we can approach this guidance in an effective manner)_
-
+_（撰寫中：這部分需要有人做更深入的貢獻。不只需要有人撰寫說明，我還得親自去測試內容是否正確，
+也就是說我這輩子得第一次使用 macOS。所以，如果有人有耐心幫忙這部分，請先建立一個 issue，
+讓我們討論如何有效地撰寫這份說明）_
