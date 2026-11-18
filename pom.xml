@@ -125,7 +125,7 @@
                 <version>1.8.0</version>
                 <executions>
                     <execution>
-                    <phase>verify</phase>
+                    <phase>package</phase>
                     <goals>
                         <goal>jpackage</goal>
                     </goals>
